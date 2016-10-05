@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="uk.ivanc.archimvvm.viewmodel.ItemRepoViewModel" />
+            type="uk.ivanc.archimvvm.viewmodel.ItemFavoriteThingViewModel" />
     </data>
 
     <android.support.v7.widget.CardView

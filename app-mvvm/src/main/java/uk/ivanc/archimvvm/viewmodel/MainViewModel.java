@@ -11,7 +11,11 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
@@ -19,8 +23,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import uk.ivanc.archimvvm.ArchiApplication;
 import uk.ivanc.archimvvm.R;
+import uk.ivanc.archimvvm.api.braqued.BrowseGithubsShowGithubThing;
 import uk.ivanc.archimvvm.model.GithubService;
-import uk.ivanc.archimvvm.model.Repository;
 
 /**
  * View model for the MainActivity
@@ -37,7 +41,7 @@ public class MainViewModel implements ViewModel {
 
     private Context context;
     private Subscription subscription;
-    private List<Repository> repositories;
+    private List<BrowseGithubsShowGithubThing> repositories;
     private DataListener dataListener;
     private String editTextUsernameValue;
 
@@ -96,17 +100,19 @@ public class MainViewModel implements ViewModel {
         };
     }
 
-    private void loadGithubRepos(String username) {
+    private void loadGithubRepos(String reponame) {
         progressVisibility.set(View.VISIBLE);
         recyclerViewVisibility.set(View.INVISIBLE);
         infoMessageVisibility.set(View.INVISIBLE);
         if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
         ArchiApplication application = ArchiApplication.get(context);
         GithubService githubService = application.getGithubService();
-        subscription = githubService.publicRepositories(username)
+        Map<String, String> queryMap = new HashMap<>();
+        queryMap.put("q", reponame);
+        subscription = githubService.browsePublicRepositories(queryMap)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(application.defaultSubscribeScheduler())
-                .subscribe(new Subscriber<List<Repository>>() {
+                .subscribe(new Subscriber<Collection<BrowseGithubsShowGithubThing>>() {
                     @Override
                     public void onCompleted() {
                         if (dataListener != null) dataListener.onRepositoriesChanged(repositories);
@@ -132,9 +138,9 @@ public class MainViewModel implements ViewModel {
                     }
 
                     @Override
-                    public void onNext(List<Repository> repositories) {
+                    public void onNext(Collection<BrowseGithubsShowGithubThing> repositories) {
                         Log.i(TAG, "Repos loaded " + repositories);
-                        MainViewModel.this.repositories = repositories;
+                        MainViewModel.this.repositories = new ArrayList<>(repositories);
                     }
                 });
     }
@@ -144,6 +150,6 @@ public class MainViewModel implements ViewModel {
     }
 
     public interface DataListener {
-        void onRepositoriesChanged(List<Repository> repositories);
+        void onRepositoriesChanged(List<BrowseGithubsShowGithubThing> repositories);
     }
 }

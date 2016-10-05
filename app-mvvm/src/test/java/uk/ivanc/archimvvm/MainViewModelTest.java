@@ -61,7 +61,7 @@ public class MainViewModelTest {
         TextView textView = new TextView(application);
         textView.setText(username);
         List<Repository> mockRepos = MockModelFabric.newListOfRepositories(10);
-        doReturn(rx.Observable.just(mockRepos)).when(githubService).publicRepositories(username);
+        doReturn(rx.Observable.just(mockRepos)).when(githubService).browsePublicRepositories(username);
 
         mainViewModel.onSearchAction(textView, EditorInfo.IME_ACTION_SEARCH, null);
         verify(dataListener).onRepositoriesChanged(mockRepos);
@@ -77,7 +77,7 @@ public class MainViewModelTest {
         textView.setText(username);
         HttpException mockHttpException =
                 new HttpException(Response.error(404, mock(ResponseBody.class)));
-        when(githubService.publicRepositories(username))
+        when(githubService.browsePublicRepositories(username))
                 .thenReturn(Observable.<List<Repository>>error(mockHttpException));
 
         mainViewModel.onSearchAction(textView, EditorInfo.IME_ACTION_SEARCH, null);
@@ -94,7 +94,7 @@ public class MainViewModelTest {
         String username = "usernameWithoutRepos";
         TextView textView = new TextView(application);
         textView.setText(username);
-        when(githubService.publicRepositories(username))
+        when(githubService.browsePublicRepositories(username))
                 .thenReturn(Observable.just(Collections.<Repository>emptyList()));
 
         mainViewModel.onSearchAction(textView, EditorInfo.IME_ACTION_SEARCH, null);

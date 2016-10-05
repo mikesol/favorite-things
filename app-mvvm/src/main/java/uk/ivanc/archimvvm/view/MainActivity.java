@@ -12,6 +12,7 @@ import java.util.List;
 
 import uk.ivanc.archimvvm.R;
 import uk.ivanc.archimvvm.FavoriteThingsAdapter;
+import uk.ivanc.archimvvm.api.braqued.BrowseGithubsShowGithubThing;
 import uk.ivanc.archimvvm.databinding.MainActivityBinding;
 import uk.ivanc.archimvvm.model.Repository;
 import uk.ivanc.archimvvm.viewmodel.MainViewModel;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Dat
     }
 
     @Override
-    public void onRepositoriesChanged(List<Repository> repositories) {
+    public void onRepositoriesChanged(List<BrowseGithubsShowGithubThing> repositories) {
         FavoriteThingsAdapter adapter =
                 (FavoriteThingsAdapter) binding.reposRecyclerView.getAdapter();
         adapter.setRepositories(repositories);

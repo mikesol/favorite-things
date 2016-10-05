@@ -104,7 +104,7 @@
             android:paddingTop="@dimen/vertical_margin_half"
             android:scrollbars="vertical"
             app:visibility="@{viewModel.recyclerViewVisibility}"
-            tools:listitem="@layout/item_repo"/>
+            tools:listitem="@layout/item_favoritething"/>
 
     </RelativeLayout>
 

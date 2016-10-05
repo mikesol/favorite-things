@@ -8,31 +8,32 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import uk.ivanc.archimvvm.databinding.ItemRepoBinding;
+import uk.ivanc.archimvvm.api.braqued.BrowseGithubsShowGithubThing;
+import uk.ivanc.archimvvm.databinding.ItemFavoritethingBinding;
 import uk.ivanc.archimvvm.model.Repository;
-import uk.ivanc.archimvvm.viewmodel.ItemRepoViewModel;
+import uk.ivanc.archimvvm.viewmodel.ItemFavoriteThingViewModel;
 
 public class FavoriteThingsAdapter extends RecyclerView.Adapter<FavoriteThingsAdapter.RepositoryViewHolder> {
 
-    private List<Repository> repositories;
+    private List<BrowseGithubsShowGithubThing> repositories;
 
     public FavoriteThingsAdapter() {
         this.repositories = Collections.emptyList();
     }
 
-    public FavoriteThingsAdapter(List<Repository> repositories) {
+    public FavoriteThingsAdapter(List<BrowseGithubsShowGithubThing> repositories) {
         this.repositories = repositories;
     }
 
-    public void setRepositories(List<Repository> repositories) {
+    public void setRepositories(List<BrowseGithubsShowGithubThing> repositories) {
         this.repositories = repositories;
     }
 
     @Override
     public RepositoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemRepoBinding binding = DataBindingUtil.inflate(
+        ItemFavoritethingBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_repo,
+                R.layout.item_favoritething,
                 parent,
                 false);
         return new RepositoryViewHolder(binding);
@@ -49,16 +50,16 @@ public class FavoriteThingsAdapter extends RecyclerView.Adapter<FavoriteThingsAd
     }
 
     public static class RepositoryViewHolder extends RecyclerView.ViewHolder {
-        final ItemRepoBinding binding;
+        final ItemFavoritethingBinding binding;
 
-        public RepositoryViewHolder(ItemRepoBinding binding) {
+        public RepositoryViewHolder(ItemFavoritethingBinding binding) {
             super(binding.cardView);
             this.binding = binding;
         }
 
-        void bindRepository(Repository repository) {
+        void bindRepository(BrowseGithubsShowGithubThing repository) {
             if (binding.getViewModel() == null) {
-                binding.setViewModel(new ItemRepoViewModel(itemView.getContext(), repository));
+                binding.setViewModel(new ItemFavoriteThingViewModel(itemView.getContext(), repository));
             } else {
                 binding.getViewModel().setRepository(repository);
             }
