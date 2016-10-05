@@ -12,15 +12,15 @@ import uk.ivanc.archimvvm.databinding.ItemRepoBinding;
 import uk.ivanc.archimvvm.model.Repository;
 import uk.ivanc.archimvvm.viewmodel.ItemRepoViewModel;
 
-public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepositoryViewHolder> {
+public class FavoriteThingsAdapter extends RecyclerView.Adapter<FavoriteThingsAdapter.RepositoryViewHolder> {
 
     private List<Repository> repositories;
 
-    public RepositoryAdapter() {
+    public FavoriteThingsAdapter() {
         this.repositories = Collections.emptyList();
     }
 
-    public RepositoryAdapter(List<Repository> repositories) {
+    public FavoriteThingsAdapter(List<Repository> repositories) {
         this.repositories = repositories;
     }
 

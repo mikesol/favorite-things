@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.List;
 
 import uk.ivanc.archimvvm.R;
-import uk.ivanc.archimvvm.RepositoryAdapter;
+import uk.ivanc.archimvvm.FavoriteThingsAdapter;
 import uk.ivanc.archimvvm.databinding.MainActivityBinding;
 import uk.ivanc.archimvvm.model.Repository;
 import uk.ivanc.archimvvm.viewmodel.MainViewModel;
@@ -39,15 +39,15 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Dat
 
     @Override
     public void onRepositoriesChanged(List<Repository> repositories) {
-        RepositoryAdapter adapter =
-                (RepositoryAdapter) binding.reposRecyclerView.getAdapter();
+        FavoriteThingsAdapter adapter =
+                (FavoriteThingsAdapter) binding.reposRecyclerView.getAdapter();
         adapter.setRepositories(repositories);
         adapter.notifyDataSetChanged();
         hideSoftKeyboard();
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        RepositoryAdapter adapter = new RepositoryAdapter();
+        FavoriteThingsAdapter adapter = new FavoriteThingsAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
