@@ -1,8 +1,5 @@
 apply from: 'dependencies.gradle'
 
-Properties properties = new Properties()
-properties.load(new File(System.getenv("HOME") + "/.jongla.local").newDataInputStream())
-
 buildscript {
     repositories {
         jcenter()
@@ -19,10 +16,6 @@ allprojects {
         jcenter()
         maven {
             url "https://jongla-bin.bintray.com/java-utils"
-            credentials {
-                username properties.getProperty("bintray.user")
-                password properties.getProperty("bintray.apikey")
-            }
         }
     }
 }
