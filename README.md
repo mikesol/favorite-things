@@ -8,12 +8,9 @@ This repository is a fork of Ivan Carballo's [archi][1] that shows off several f
 
 ### Libraries used 
 * AppCompat, CardView and RecyclerView
-* Data Binding (only MVVM)
+* Data Binding
 * RxJava & RxAndroid
 * Retrofit 2
-* Picasso
-* Mockito
-* Robolectric
 
 ## License
 
