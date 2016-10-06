@@ -40,6 +40,7 @@ dependencies {
     compile dependencies.retrofitAdapterRxJava
     compile dependencies.picasso
     compile dependencies.rxAndroid
+    compile dependencies.rxJava
     compile dependencies.circleImageView
     compile dependencies.guice
     compile dependencies.braqueCore

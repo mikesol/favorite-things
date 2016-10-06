@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="uk.ivanc.archimvvm.viewmodel.BrowseThingViewModel"/>
+            type="com.jongla.favoritethings.viewmodel.browse.BrowseThingViewModel"/>
     </data>
 
     <RelativeLayout
