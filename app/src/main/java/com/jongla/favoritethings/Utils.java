@@ -1,7 +1,9 @@
 package com.jongla.favoritethings;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.jongla.favoritethings.database.FavoriteThingContract;
 
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import braque.RESTEndpoint;
 import braque.braqued.Fanner;
 
 /**
@@ -112,5 +115,11 @@ public class Utils {
         } else {
             throw new IllegalArgumentException("unserializiable value");
         }
+    }
+
+    public static void fakeLocalyticsEventSending(Context context, RESTEndpoint restEndpoint) {
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, "Fake Localytics event with this info:\n"+restEndpoint, duration);
+        toast.show();
     }
 }

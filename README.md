@@ -1,4 +1,4 @@
-# Archi
+# FavoriteThings
 This favoriteThing showcases and compares different architectural patterns that can be used to build Android apps. The exact same sample app is built three times using the following approaches:
 * __Standard Android__: traditional approach with layouts, Activities/Fragments and Model.
 * __MVP__: Model View Presenter.

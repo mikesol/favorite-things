@@ -7,5 +7,5 @@ import braque.Property;
  */
 
 @Property(String.class)
-public interface DeviceModel {
+public interface DeviceId {
 }

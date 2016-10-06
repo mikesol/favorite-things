@@ -3,11 +3,12 @@ package com.jongla.favoritethings.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.provider.Settings;
 import android.view.View;
 
 import com.jongla.favoritethings.R;
 import com.jongla.favoritethings.Utils;
+import com.jongla.favoritethings.api.braqued.BrowseGithubsShowGithubThing;
 import com.jongla.favoritethings.database.FavoriteThingContract;
 import com.jongla.favoritethings.model.favoritething.braqued.IdGet;
 import com.jongla.favoritethings.model.favoritething.braqued.LikeGet;
@@ -26,6 +27,7 @@ import java.util.Map;
 import braque.RESTEndpoint;
 import braque.braqued.Serializer;
 import braque.braqued.StringProvisioner;
+import braque.braqued.Transformer;
 
 /**
  * View model for each item in the repositories RecyclerView
@@ -46,25 +48,42 @@ public class ItemFavoriteThingViewModel<T extends RESTEndpoint> extends BaseObse
 
 
     public void onFavoriteClick(View view) {
-        new AsyncTask<Void, Void, Void>(){
+        new AsyncTask<Void, Void, Boolean>(){
+            String id = ((IdGet) favoriteThing).getId();
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Boolean doInBackground(Void... params) {
                 if (getLike()) {
                     context.getContentResolver()
                             .delete(FavoriteThingProvider.CONTENT_URI,
                                     FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_UID+" IS ?",
-                                    new String[]{((IdGet)favoriteThing).getId()});
+                                    new String[]{id});
+                    return false;
                 } else {
                     Map<String, Object> serialized = Serializer._serialize(favoriteThing);
                     String likePath = new ArrayList<>(serialized.keySet()).get(0).split("/")[0]
-                            + "/" + ((IdGet) favoriteThing).getId()
+                            + "/" + id
                             + "/" + StringProvisioner.propLike().toLowerCase();
                     serialized.put(likePath, true);
                     context.getContentResolver()
                             .bulkInsert(FavoriteThingProvider.CONTENT_URI,
                                     Utils.serializedToManyContentValues(serialized));
+                    return true;
                 }
-                return null;
+            }
+            @Override
+            public void onPostExecute(Boolean result) {
+                //For nonsensical reasons, let's assume that we want to fire off
+                // a localytics event for github likes. Let's do that!
+                if (favoriteThing instanceof BrowseGithubsShowGithubThing && result) {
+                    String android_id = Settings.Secure.getString(context.getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+                    Utils.fakeLocalyticsEventSending(context,
+                            Transformer.makeLocalyticsEventCreateGithubThing(id)
+                                    .addLike(true)
+                                    .addDeviceId(android_id)
+                                    .addTimestamp(System.currentTimeMillis())
+                                    .commit());
+                }
             }
         }.execute();
     }
