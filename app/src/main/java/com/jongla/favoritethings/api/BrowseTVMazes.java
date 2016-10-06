@@ -20,6 +20,7 @@ import braque.Show;
                 ShowType.class,
                 Name.class,
                 Description.class
-})
+        }
+)
 public interface BrowseTVMazes {
 }

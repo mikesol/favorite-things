@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.jongla.favoritethings.api.braqued.$FavoritizeUpdateFavoriteThing;
 import com.jongla.favoritethings.databinding.ItemFavoritethingBinding;
 import com.jongla.favoritethings.viewmodel.ItemFavoriteThingViewModel;
 

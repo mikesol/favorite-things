@@ -19,6 +19,7 @@ import braque.Show;
                 Like.class,
                 Name.class,
                 Year.class
-        })
+        }
+)
 public interface BrowseOMDBs {
 }

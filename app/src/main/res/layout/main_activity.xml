@@ -36,30 +36,44 @@
             android:paddingRight="@dimen/vertical_margin"
             android:paddingTop="10dp">
 
-            <ImageButton
-                android:id="@+id/button_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="5dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="@{viewModel.onClickSearch}"
-                android:src="@drawable/ic_search_white_36dp"
-                app:visibility="@{viewModel.searchButtonVisibility}"
-                tools:visibility="visible"/>
-
-            <EditText
-                android:id="@+id/edit_text_username"
+            <RelativeLayout
+                android:visibility="@{viewModel.favoriteVisibility}"
+                android:id="@+id/favorite_topmatter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/button_search"
-                android:hint="@string/hit_search"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:onEditorAction="@{viewModel.onSearchAction}"
-                android:textColor="@color/white"
-                android:theme="@style/LightEditText"
-                app:addTextChangedListener="@{viewModel.usernameEditTextWatcher}"/>
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:visibility="@{viewModel.pickerVisibility}"
+                android:id="@+id/picker_topmatter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/button_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{viewModel.onClickSearch}"
+                    android:src="@drawable/ic_search_white_36dp"
+                    app:visibility="@{viewModel.searchButtonVisibility}"
+                    tools:visibility="visible"/>
+
+                <EditText
+                    android:id="@+id/edit_text_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/button_search"
+                    android:hint="@string/hit_search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:onEditorAction="@{viewModel.onSearchAction}"
+                    android:textColor="@color/white"
+                    android:theme="@style/LightEditText"
+                    app:addTextChangedListener="@{viewModel.usernameEditTextWatcher}"/>
+            </RelativeLayout>
 
         </RelativeLayout>
 

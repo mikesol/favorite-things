@@ -25,11 +25,15 @@ public class MainViewModel implements ViewModel, ViewPager.OnPageChangeListener 
     BrowsableFragmentPagerAdapter adapter;
 
     public ObservableInt searchButtonVisibility;
+    public ObservableInt favoriteVisibility;
+    public ObservableInt pickerVisibility;
 
     private Subscription subscription;
     private String editTextUsernameValue;
 
     public MainViewModel() {
+        favoriteVisibility = new ObservableInt(View.VISIBLE);
+        pickerVisibility = new ObservableInt(View.GONE);
         searchButtonVisibility = new ObservableInt(View.GONE);
     }
 
@@ -90,6 +94,13 @@ public class MainViewModel implements ViewModel, ViewPager.OnPageChangeListener 
     @Override
     public void onPageSelected(int position) {
         currentPage = position;
+        if (position == 0) {
+            pickerVisibility.set(View.GONE);
+            favoriteVisibility.set(View.VISIBLE);
+        } else {
+            pickerVisibility.set(View.VISIBLE);
+            favoriteVisibility.set(View.GONE);
+        }
     }
 
     @Override
