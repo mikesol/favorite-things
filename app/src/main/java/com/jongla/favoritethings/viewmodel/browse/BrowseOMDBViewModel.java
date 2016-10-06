@@ -52,6 +52,6 @@ public class BrowseOMDBViewModel extends BrowseThingViewModel<BrowseOMDBsShowOMD
 
     @Override
     protected int getLoaderCallbackIndex() {
-        return 2;
+        return 3;
     }
 }

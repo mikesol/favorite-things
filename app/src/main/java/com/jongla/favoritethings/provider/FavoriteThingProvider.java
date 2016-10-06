@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.jongla.favoritethings.database.FavoriteThingContract;
 import com.jongla.favoritethings.database.FavoriteThingDatabaseHelper;
@@ -44,7 +43,10 @@ public class FavoriteThingProvider extends ContentProvider {
         return null;
     }
 
-    private long genericInsert(Uri uri, ContentValues values) {
+    private long genericInsert(ContentValues values) {
+        mOpenHelper.getWritableDatabase().delete(FavoriteThingContract.FavoriteThingEntry.TABLE_NAME,
+                FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_PATH+" IS ?",
+                new String[]{values.getAsString(FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_PATH)});
         return mOpenHelper.getWritableDatabase().insertOrThrow(FavoriteThingContract.FavoriteThingEntry.TABLE_NAME,
                 null, values);
     }
@@ -53,7 +55,7 @@ public class FavoriteThingProvider extends ContentProvider {
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         int res = 0;
         for (ContentValues contentValues : values) {
-            long id = genericInsert(uri, contentValues);
+            long id = genericInsert(contentValues);
             res += (id >= 0) ? 1 : 0;
         }
         if (res > 0) {
@@ -65,7 +67,7 @@ public class FavoriteThingProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long id = genericInsert(uri, values);
+        long id = genericInsert(values);
         if (id >= 0) {
             getContext().getContentResolver().notifyChange(uri, null);
             return uri;

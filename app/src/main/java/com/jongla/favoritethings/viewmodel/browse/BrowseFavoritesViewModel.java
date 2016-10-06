@@ -6,8 +6,8 @@ import android.support.v4.app.LoaderManager;
 
 import com.jongla.favoritethings.ArchiApplication;
 import com.jongla.favoritethings.R;
-import com.jongla.favoritethings.api.braqued.BrowseTVMazesShowTVMazeThing;
-import com.jongla.favoritethings.model.TVMazeService;
+import com.jongla.favoritethings.api.braqued.BrowseGithubsShowGithubThing;
+import com.jongla.favoritethings.model.GithubService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,37 +20,38 @@ import rx.Observable;
  * Created by mikesolomon on 05/10/16.
  */
 
-public class BrowseTVMazeViewModel extends BrowseThingViewModel<BrowseTVMazesShowTVMazeThing> {
+public class BrowseFavoritesViewModel extends BrowseThingViewModel<BrowseGithubsShowGithubThing> {
     @Override
     protected ObservableField<String> getInfoObservableField(Context context) {
-        return new ObservableField<>(context.getString(R.string.tvmaze_info_message));
+        return new ObservableField<>(context.getString(R.string.github_info_message));
     }
 
-    public BrowseTVMazeViewModel(Context context, LoaderManager loaderManager, DataListener<BrowseTVMazesShowTVMazeThing> dataListener) {
+    public BrowseFavoritesViewModel(Context context, LoaderManager loaderManager,
+                                    DataListener<BrowseGithubsShowGithubThing> dataListener) {
         super(context, loaderManager, dataListener);
     }
 
     @Override
-    protected Observable<List<BrowseTVMazesShowTVMazeThing>> makeObservable(Context context, String input) {
+    protected Observable<List<BrowseGithubsShowGithubThing>> makeObservable(Context context, String input) {
         ArchiApplication application = ArchiApplication.get(context);
-        TVMazeService tvMazeService = application.getTVMazeService();
+        GithubService githubService = application.getGithubService();
         Map<String, String> queryMap = new HashMap<>();
         queryMap.put("q", input);
-        return tvMazeService.browseTVMazes(queryMap);
+        return githubService.browsePublicRepositories(queryMap);
     }
 
     @Override
     protected String pathHead() {
-        return StringProvisioner.pathBrowseTVMazes();
+        return StringProvisioner.pathBrowseGithubs();
     }
 
     @Override
-    protected Class<BrowseTVMazesShowTVMazeThing> klass() {
-        return BrowseTVMazesShowTVMazeThing.class;
+    protected Class<BrowseGithubsShowGithubThing> klass() {
+        return BrowseGithubsShowGithubThing.class;
     }
 
     @Override
     protected int getLoaderCallbackIndex() {
-        return 2;
+        return 1;
     }
 }

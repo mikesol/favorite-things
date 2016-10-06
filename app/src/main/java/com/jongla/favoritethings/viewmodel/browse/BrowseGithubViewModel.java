@@ -52,6 +52,6 @@ public class BrowseGithubViewModel extends BrowseThingViewModel<BrowseGithubsSho
 
     @Override
     protected int getLoaderCallbackIndex() {
-        return 0;
+        return 1;
     }
 }

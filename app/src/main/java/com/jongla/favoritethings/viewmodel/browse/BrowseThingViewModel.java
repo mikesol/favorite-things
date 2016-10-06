@@ -90,7 +90,7 @@ public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> im
      * @param cursor
      * @return
      */
-    private List<T> mergeData(List<T> originalData, Cursor cursor) {
+    protected List<T> mergeData(List<T> originalData, Cursor cursor) {
         if (originalData.size() == 0) {
             return originalData;
         }
