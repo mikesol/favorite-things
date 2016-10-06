@@ -40,6 +40,11 @@ public class BrowseTVMazeViewModel extends BrowseThingViewModel<BrowseTVMazesSho
     }
 
     @Override
+    protected int getEmptyResource() {
+        return R.string.text_empty;
+    }
+
+    @Override
     protected String pathHead() {
         return StringProvisioner.pathBrowseTVMazes();
     }

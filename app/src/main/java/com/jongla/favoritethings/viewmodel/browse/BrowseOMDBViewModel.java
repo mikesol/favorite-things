@@ -41,6 +41,11 @@ public class BrowseOMDBViewModel extends BrowseThingViewModel<BrowseOMDBsShowOMD
     }
 
     @Override
+    protected int getEmptyResource() {
+        return R.string.text_empty;
+    }
+
+    @Override
     protected String pathHead() {
         return StringProvisioner.pathBrowseOMDBs();
     }

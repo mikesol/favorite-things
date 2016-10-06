@@ -20,7 +20,7 @@ import java.util.List;
 import braque.RESTEndpoint;
 import braque.RESTShow;
 
-public abstract class BrowsableFragment<T extends RESTEndpoint & RESTShow>
+public abstract class BrowsableFragment<T extends RESTEndpoint>
         extends Fragment implements BrowseThingViewModel.DataListener<T> {
 
     private TopLevelFragmentBinding binding;

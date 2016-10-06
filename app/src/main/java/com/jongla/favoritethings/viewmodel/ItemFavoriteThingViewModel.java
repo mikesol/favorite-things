@@ -3,6 +3,7 @@ package com.jongla.favoritethings.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 
 import com.jongla.favoritethings.R;
@@ -23,14 +24,13 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import braque.RESTEndpoint;
-import braque.RESTShow;
 import braque.braqued.Serializer;
 import braque.braqued.StringProvisioner;
 
 /**
  * View model for each item in the repositories RecyclerView
  */
-public class ItemFavoriteThingViewModel<T extends RESTEndpoint & RESTShow> extends BaseObservable implements ViewModel {
+public class ItemFavoriteThingViewModel<T extends RESTEndpoint> extends BaseObservable implements ViewModel {
 
     private T favoriteThing;
     private Context context;

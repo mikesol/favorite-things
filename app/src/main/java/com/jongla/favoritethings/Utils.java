@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import braque.braqued.Fanner;
+
 /**
  * Created by mikesolomon on 05/10/16.
  */
@@ -89,5 +91,26 @@ public class Utils {
         ContentValues[] contentValuesArray = new ContentValues[contentValuesList.size()];
         contentValuesList.toArray(contentValuesArray);
         return contentValuesArray;
+    }
+
+    public static Object stringToObjectFromDb(String path, String toConvert) {
+        String[] segments = path.split("/");
+        path = segments[0] + "/*/" + segments[2];
+        Class<?> type = new ArrayList<>(Fanner._pathToTypes().get(path)).get(0);
+        if (type.equals(Boolean.class)) {
+            return Integer.valueOf(toConvert) == 0 ? false : true;
+        } else if (type.equals(Integer.class)) {
+            return Integer.valueOf(toConvert);
+        } else if (type.equals(Double.class)) {
+            return Double.valueOf(toConvert);
+        } else if (type.equals(Float.class)) {
+            return Float.valueOf(toConvert);
+        } else if (type.equals(Long.class)) {
+            return Long.valueOf(toConvert);
+        } else if (type.equals(String.class)) {
+            return String.valueOf(toConvert);
+        } else {
+            throw new IllegalArgumentException("unserializiable value");
+        }
     }
 }

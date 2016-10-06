@@ -9,9 +9,10 @@
     <string name="text_showtype">Show Type \n%s</string>
     <string name="text_language">Language \n%s</string>
     <string name="text_year">Year \n%s</string>
-    <string name="error_loading_repos">Oops, something went wrong</string>
-    <string name="text_empty_repos">This account doesn\'t have any public favoriteThing</string>
-    <string name="error_username_not_found">Oops, Octocat doesn\'t know that username</string>
+    <string name="error_loading">Oops, something went wrong</string>
+    <string name="text_fill_up">Fill up this list by swiping to the left, searching for repos/movies/shows, and picking some favorites!</string>
+    <string name="text_empty">This query was empty</string>
+    <string name="error_not_found">Oops, can\'t find information for your query</string>
     <string name="hit_search">Search</string>
     <string name="tvmaze_info_message">Search TV shows above</string>
     <string name="github_info_message">Search GitHub repo names above</string>

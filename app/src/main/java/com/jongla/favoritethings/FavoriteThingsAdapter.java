@@ -15,7 +15,7 @@ import java.util.List;
 import braque.RESTEndpoint;
 import braque.RESTShow;
 
-public class FavoriteThingsAdapter<S extends RESTEndpoint & RESTShow> extends
+public class FavoriteThingsAdapter<S extends RESTEndpoint> extends
         RecyclerView.Adapter<FavoriteThingsAdapter.RepositoryViewHolder> {
 
     private List<S> things;
@@ -48,7 +48,7 @@ public class FavoriteThingsAdapter<S extends RESTEndpoint & RESTShow> extends
         return things.size();
     }
 
-    public static class RepositoryViewHolder<S extends RESTEndpoint & RESTShow> extends RecyclerView.ViewHolder {
+    public static class RepositoryViewHolder<S extends RESTEndpoint> extends RecyclerView.ViewHolder {
         final ItemFavoritethingBinding binding;
 
         public RepositoryViewHolder(ItemFavoritethingBinding binding) {

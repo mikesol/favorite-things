@@ -41,6 +41,11 @@ public class BrowseGithubViewModel extends BrowseThingViewModel<BrowseGithubsSho
     }
 
     @Override
+    protected int getEmptyResource() {
+        return R.string.text_empty;
+    }
+
+    @Override
     protected String pathHead() {
         return StringProvisioner.pathBrowseGithubs();
     }

@@ -13,24 +13,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import braque.RESTShow;
+import braque.RESTEndpoint;
 import braque.braqued.Deserializer;
 import braque.braqued.StringProvisioner;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
-public class BraqueResponseBodyConverter implements Converter<ResponseBody, Collection<? extends RESTShow>> {
+public class BraqueResponseBodyConverter implements Converter<ResponseBody, Collection<? extends RESTEndpoint>> {
 
-    private final Class<? extends RESTShow> deserializingTo;
+    private final Class<? extends RESTEndpoint> deserializingTo;
     private final BraqueProperty[] properties;
     private final String arrayAddress;
     private final String topLevelPath;
 
-    BraqueResponseBodyConverter(Class<? extends RESTShow> deserializingTo, String topLevelPath, BraqueProperty[] properties) {
+    BraqueResponseBodyConverter(Class<? extends RESTEndpoint> deserializingTo, String topLevelPath, BraqueProperty[] properties) {
         this(deserializingTo, topLevelPath, properties, null);
     }
 
-    BraqueResponseBodyConverter(Class<? extends RESTShow> deserializingTo, String topLevelPath, BraqueProperty[] properties, String arrayAddress) {
+    BraqueResponseBodyConverter(Class<? extends RESTEndpoint> deserializingTo, String topLevelPath, BraqueProperty[] properties, String arrayAddress) {
         this.deserializingTo = deserializingTo;
         this.topLevelPath = topLevelPath;
         this.properties = properties;
@@ -46,7 +46,7 @@ public class BraqueResponseBodyConverter implements Converter<ResponseBody, Coll
         }
     }
 
-    @Override public Collection<? extends RESTShow> convert(ResponseBody value) throws IOException {
+    @Override public Collection<? extends RESTEndpoint> convert(ResponseBody value) throws IOException {
         try {
             JSONArray items;
             if (arrayAddress == null) {
@@ -103,7 +103,7 @@ public class BraqueResponseBodyConverter implements Converter<ResponseBody, Coll
                     }
                 }
             }
-            Collection<? extends RESTShow> coll = Deserializer._deserialize(serialized, deserializingTo);
+            Collection<? extends RESTEndpoint> coll = Deserializer._deserialize(serialized, deserializingTo);
             return coll;
         } catch (JSONException e) {
             Log.e("Braque", e.toString());

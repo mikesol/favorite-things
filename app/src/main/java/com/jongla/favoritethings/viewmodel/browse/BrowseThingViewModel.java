@@ -42,7 +42,7 @@ import rx.functions.Func1;
 /**
  * View model for the MainActivity
  */
-public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> implements ViewModel {
+public abstract class BrowseThingViewModel<T extends RESTEndpoint> implements ViewModel {
 
     private static final String TAG = "TopLevelFragmentVM";
 
@@ -117,6 +117,7 @@ public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> im
     abstract protected String pathHead();
     abstract protected Class<T> klass();
     abstract protected int getLoaderCallbackIndex();
+    abstract protected int getEmptyResource();
 
     public void loadFavoriteThings(String input) {
         progressVisibility.set(View.VISIBLE);
@@ -141,6 +142,9 @@ public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> im
                                                         FavoriteThingProvider.CONTENT_URI,
                                                         new String[]{
                                                                 FavoriteThingContract.FavoriteThingEntry._ID,
+                                                                FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_PATH,
+                                                                FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_ORIGIN,
+                                                                FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_VALUE,
                                                                 FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_UID
                                                         }, null, null, null);
                                                 return loader;
@@ -171,9 +175,9 @@ public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> im
                         Log.e(TAG, "Error loading GitHub repos ", error);
                         progressVisibility.set(View.INVISIBLE);
                         if (isHttp404(error)) {
-                            infoMessage.set(context.getString(R.string.error_username_not_found));
+                            infoMessage.set(context.getString(R.string.error_not_found));
                         } else {
-                            infoMessage.set(context.getString(R.string.error_loading_repos));
+                            infoMessage.set(context.getString(R.string.error_loading));
                         }
                         infoMessageVisibility.set(View.VISIBLE);
                     }
@@ -186,7 +190,7 @@ public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> im
                         if (!favoriteThings.isEmpty()) {
                             recyclerViewVisibility.set(View.VISIBLE);
                         } else {
-                            infoMessage.set(context.getString(R.string.text_empty_repos));
+                            infoMessage.set(context.getString(getEmptyResource()));
                             infoMessageVisibility.set(View.VISIBLE);
                         }
                     }
