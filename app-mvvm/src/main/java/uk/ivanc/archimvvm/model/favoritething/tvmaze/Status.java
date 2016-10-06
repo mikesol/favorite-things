@@ -1,13 +1,11 @@
-package uk.ivanc.archimvvm.model.user;
+package uk.ivanc.archimvvm.model.favoritething.tvmaze;
 
 import braque.Property;
-import braque.UID;
 
 /**
  * Created by mikesolomon on 05/10/16.
  */
 
-@UID
 @Property(String.class)
-public interface Id {
+public interface Status {
 }

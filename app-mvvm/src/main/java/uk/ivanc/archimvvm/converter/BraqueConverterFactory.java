@@ -1,7 +1,5 @@
 package uk.ivanc.archimvvm.converter;
 
-import android.util.Log;
-
 import com.google.inject.util.Types;
 
 import java.lang.annotation.Annotation;
@@ -14,6 +12,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import uk.ivanc.archimvvm.api.braqued.BrowseGithubsShowGithubThing;
+import uk.ivanc.archimvvm.api.braqued.BrowseOMDBsShowOMDBThing;
+import uk.ivanc.archimvvm.api.braqued.BrowseTVMazesShowTVMazeThing;
 
 import static uk.ivanc.archimvvm.converter.BraqueResponseBodyConverter.BraqueProperty;
 
@@ -32,18 +32,36 @@ public final class BraqueConverterFactory extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
         if (type.toString().equals(Types.newParameterizedType(List.class, BrowseGithubsShowGithubThing.class).toString())) {
-            Log.d("BraqueConverterFactory","converter worked");
-            return new BraqueResponseBodyConverter(BrowseGithubsShowGithubThing.class, "id",
+            return new BraqueResponseBodyConverter(BrowseGithubsShowGithubThing.class,
+                    StringProvisioner.pathBrowseGithubs(),
                     new BraqueResponseBodyConverter.BraqueProperty[]{
+                            new BraqueProperty("id", StringProvisioner.propId()),
                             new BraqueProperty("stargazers_count", StringProvisioner.propStars()),
                             new BraqueProperty("name", StringProvisioner.propName()),
                             new BraqueProperty("forks_count", StringProvisioner.propForks()),
                             new BraqueProperty("watchers_count", StringProvisioner.propWatchers()),
-                            new BraqueProperty("language", StringProvisioner.propLanguage()),
-                            new BraqueProperty("owner.name", StringProvisioner.propOwner()),
-                            new BraqueProperty("owner.avatar_url", StringProvisioner.propAvatarURL())
+                            new BraqueProperty("description", StringProvisioner.propDescription())
+                    }, "items");
+        } else if (type.toString().equals(Types.newParameterizedType(List.class, BrowseTVMazesShowTVMazeThing.class).toString())) {
+            return new BraqueResponseBodyConverter(BrowseTVMazesShowTVMazeThing.class,
+                    StringProvisioner.pathBrowseTVMazes(),
+                    new BraqueResponseBodyConverter.BraqueProperty[]{
+                            new BraqueProperty("show.id", StringProvisioner.propId()),
+                            new BraqueProperty("show.type", StringProvisioner.propShowType()),
+                            new BraqueProperty("show.name", StringProvisioner.propName()),
+                            new BraqueProperty("show.summary", StringProvisioner.propDescription())
                     });
+        } else if (type.toString().equals(Types.newParameterizedType(List.class, BrowseOMDBsShowOMDBThing.class).toString())) {
+            return new BraqueResponseBodyConverter(BrowseOMDBsShowOMDBThing.class,
+                    StringProvisioner.pathBrowseOMDBs(),
+                    new BraqueResponseBodyConverter.BraqueProperty[]{
+                            new BraqueProperty("imdbID", StringProvisioner.propId()),
+                            new BraqueProperty("Title", StringProvisioner.propName()),
+                            new BraqueProperty("Year", StringProvisioner.propYear()),
+                    }, "Search");
         }
+        // id name genres runtime type status network.name image.medium
+        // "imdbID"
         return null;
     }
 

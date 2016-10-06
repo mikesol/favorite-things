@@ -10,17 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import uk.ivanc.archimvvm.R;
 import uk.ivanc.archimvvm.databinding.RepositoryActivityBinding;
 import uk.ivanc.archimvvm.model.Repository;
-import uk.ivanc.archimvvm.viewmodel.RepositoryViewModel;
+import uk.ivanc.archimvvm.viewmodel.GithubViewModel;
+import uk.ivanc.archimvvm.viewmodel.InspectThingViewModel;
 
-public class RepositoryActivity extends AppCompatActivity {
+public class InspectActivity extends AppCompatActivity {
 
     private static final String EXTRA_REPOSITORY = "EXTRA_REPOSITORY";
 
     private RepositoryActivityBinding binding;
-    private RepositoryViewModel repositoryViewModel;
+    private GithubViewModel inspectThingViewModel;
 
     public static Intent newIntent(Context context, Repository repository) {
-        Intent intent = new Intent(context, RepositoryActivity.class);
+        Intent intent = new Intent(context, InspectActivity.class);
         intent.putExtra(EXTRA_REPOSITORY, repository);
         return intent;
     }
@@ -36,8 +37,8 @@ public class RepositoryActivity extends AppCompatActivity {
         }
 
         Repository repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
-        repositoryViewModel = new RepositoryViewModel(this, repository);
-        binding.setViewModel(repositoryViewModel);
+        inspectThingViewModel = new GithubViewModel(this, repository);
+        binding.setViewModel(inspectThingViewModel);
 
         //Currently there is no way of setting an activity title using data binding
         setTitle(repository.name);
@@ -46,6 +47,6 @@ public class RepositoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        repositoryViewModel.destroy();
+        inspectThingViewModel.destroy();
     }
 }

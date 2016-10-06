@@ -1,83 +1,60 @@
 package uk.ivanc.archimvvm.viewmodel;
 
-import android.content.Context;
-import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import uk.ivanc.archimvvm.ArchiApplication;
-import uk.ivanc.archimvvm.R;
-import uk.ivanc.archimvvm.api.braqued.BrowseGithubsShowGithubThing;
-import uk.ivanc.archimvvm.model.GithubService;
+import uk.ivanc.archimvvm.BrowsableFragmentPagerAdapter;
+import uk.ivanc.archimvvm.view.BrowsableFragment;
 
 /**
  * View model for the MainActivity
  */
-public class MainViewModel implements ViewModel {
+public class MainViewModel implements ViewModel, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "MainViewModel";
+    private int currentPage = 0;
+    BrowsableFragmentPagerAdapter adapter;
 
-    public ObservableInt infoMessageVisibility;
-    public ObservableInt progressVisibility;
-    public ObservableInt recyclerViewVisibility;
     public ObservableInt searchButtonVisibility;
-    public ObservableField<String> infoMessage;
 
-    private Context context;
     private Subscription subscription;
-    private List<BrowseGithubsShowGithubThing> repositories;
-    private DataListener dataListener;
     private String editTextUsernameValue;
 
-    public MainViewModel(Context context, DataListener dataListener) {
-        this.context = context;
-        this.dataListener = dataListener;
-        infoMessageVisibility = new ObservableInt(View.VISIBLE);
-        progressVisibility = new ObservableInt(View.INVISIBLE);
-        recyclerViewVisibility = new ObservableInt(View.INVISIBLE);
+    public MainViewModel() {
         searchButtonVisibility = new ObservableInt(View.GONE);
-        infoMessage = new ObservableField<>(context.getString(R.string.default_info_message));
     }
 
-    public void setDataListener(DataListener dataListener) {
-        this.dataListener = dataListener;
+    public void setupViewPager(ViewPager viewPager, FragmentManager fragmentManager) {
+        adapter = new BrowsableFragmentPagerAdapter(fragmentManager);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override
     public void destroy() {
         if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
         subscription = null;
-        context = null;
-        dataListener = null;
     }
 
     public boolean onSearchAction(TextView view, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            String username = view.getText().toString();
-            if (username.length() > 0) loadGithubRepos(username);
+            String inputQuery = view.getText().toString();
+            if (inputQuery.length() > 0) doQueryAction(inputQuery);
             return true;
         }
         return false;
     }
 
     public void onClickSearch(View view) {
-        loadGithubRepos(editTextUsernameValue);
+        doQueryAction(editTextUsernameValue);
     }
 
     public TextWatcher getUsernameEditTextWatcher() {
@@ -100,56 +77,22 @@ public class MainViewModel implements ViewModel {
         };
     }
 
-    private void loadGithubRepos(String reponame) {
-        progressVisibility.set(View.VISIBLE);
-        recyclerViewVisibility.set(View.INVISIBLE);
-        infoMessageVisibility.set(View.INVISIBLE);
-        if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
-        ArchiApplication application = ArchiApplication.get(context);
-        GithubService githubService = application.getGithubService();
-        Map<String, String> queryMap = new HashMap<>();
-        queryMap.put("q", reponame);
-        subscription = githubService.browsePublicRepositories(queryMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(application.defaultSubscribeScheduler())
-                .subscribe(new Subscriber<Collection<BrowseGithubsShowGithubThing>>() {
-                    @Override
-                    public void onCompleted() {
-                        if (dataListener != null) dataListener.onRepositoriesChanged(repositories);
-                        progressVisibility.set(View.INVISIBLE);
-                        if (!repositories.isEmpty()) {
-                            recyclerViewVisibility.set(View.VISIBLE);
-                        } else {
-                            infoMessage.set(context.getString(R.string.text_empty_repos));
-                            infoMessageVisibility.set(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        Log.e(TAG, "Error loading GitHub repos ", error);
-                        progressVisibility.set(View.INVISIBLE);
-                        if (isHttp404(error)) {
-                            infoMessage.set(context.getString(R.string.error_username_not_found));
-                        } else {
-                            infoMessage.set(context.getString(R.string.error_loading_repos));
-                        }
-                        infoMessageVisibility.set(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onNext(Collection<BrowseGithubsShowGithubThing> repositories) {
-                        Log.i(TAG, "Repos loaded " + repositories);
-                        MainViewModel.this.repositories = new ArrayList<>(repositories);
-                    }
-                });
+    private void doQueryAction(String reponame) {
+        ((BrowsableFragment)adapter.getItem(currentPage)).getModel().loadFavoriteThings(reponame);
     }
 
-    private static boolean isHttp404(Throwable error) {
-        return error instanceof HttpException && ((HttpException) error).code() == 404;
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
     }
 
-    public interface DataListener {
-        void onRepositoriesChanged(List<BrowseGithubsShowGithubThing> repositories);
+    @Override
+    public void onPageSelected(int position) {
+        currentPage = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

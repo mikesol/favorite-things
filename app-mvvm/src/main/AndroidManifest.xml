@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.RepositoryActivity"
+            android:name=".view.InspectActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".view.MainActivity"/>
     </application>

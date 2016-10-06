@@ -6,10 +6,14 @@ import android.content.Context;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 import uk.ivanc.archimvvm.model.GithubService;
+import uk.ivanc.archimvvm.model.OMDBService;
+import uk.ivanc.archimvvm.model.TVMazeService;
 
 public class ArchiApplication extends Application {
 
     private GithubService githubService;
+    private TVMazeService tvMazeService;
+    private OMDBService omdbService;
     private Scheduler defaultSubscribeScheduler;
 
     public static ArchiApplication get(Context context) {
@@ -21,6 +25,20 @@ public class ArchiApplication extends Application {
             githubService = GithubService.Factory.create();
         }
         return githubService;
+    }
+
+    public TVMazeService getTVMazeService() {
+        if (tvMazeService == null) {
+            tvMazeService = TVMazeService.Factory.create();
+        }
+        return tvMazeService;
+    }
+
+    public OMDBService getOMDBService() {
+        if (omdbService == null) {
+            omdbService = OMDBService.Factory.create();
+        }
+        return omdbService;
     }
 
     //For setting mocks during testing

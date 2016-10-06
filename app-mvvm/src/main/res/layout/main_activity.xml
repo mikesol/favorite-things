@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/button_search"
-                android:hint="@string/hit_username"
+                android:hint="@string/hit_search"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:onEditorAction="@{viewModel.onSearchAction}"
@@ -70,41 +70,19 @@
 
         </RelativeLayout>
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
             android:layout_below="@id/layout_search"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            app:visibility="@{viewModel.progressVisibility}"/>
-
-        <TextView
-            android:id="@+id/text_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_search"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/vertical_margin"
-            android:layout_marginRight="@dimen/vertical_margin"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@{viewModel.infoMessage}"
-            android:textColor="@color/secondary_text"
-            android:textSize="18sp"
-            app:visibility="@{viewModel.infoMessageVisibility}"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/repos_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/layout_search"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/vertical_margin_half"
-            android:paddingTop="@dimen/vertical_margin_half"
-            android:scrollbars="vertical"
-            app:visibility="@{viewModel.recyclerViewVisibility}"
-            tools:listitem="@layout/item_favoritething"/>
+            android:layout_height="match_parent">
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pager_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp" />
+        </android.support.v4.view.ViewPager>
 
     </RelativeLayout>
 

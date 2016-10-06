@@ -20,11 +20,11 @@ import uk.ivanc.archimvvm.model.Repository;
 import uk.ivanc.archimvvm.model.User;
 
 /**
- * ViewModel for the RepositoryActivity
+ * ViewModel for the InspectActivity
  */
-public class RepositoryViewModel implements ViewModel {
+public class GithubViewModel implements ViewModel {
 
-    private static final String TAG = "RepositoryViewModel";
+    private static final String TAG = "InspectThingViewModel";
 
     private Repository repository;
     private Context context;
@@ -37,7 +37,7 @@ public class RepositoryViewModel implements ViewModel {
     public ObservableInt ownerLocationVisibility;
     public ObservableInt ownerLayoutVisibility;
 
-    public RepositoryViewModel(Context context, final Repository repository) {
+    public GithubViewModel(Context context, final Repository repository) {
         this.repository = repository;
         this.context = context;
         this.ownerName = new ObservableField<>();

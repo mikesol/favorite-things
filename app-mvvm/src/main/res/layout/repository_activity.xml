@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="uk.ivanc.archimvvm.viewmodel.RepositoryViewModel"/>
+            type="uk.ivanc.archimvvm.viewmodel.GithubViewModel"/>
     </data>
 
     <RelativeLayout
@@ -49,7 +49,7 @@
                 android:text="@{viewModel.description}"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                tools:text="This is the description for this repository that can be fairly long"/>
+                tools:text="This is the description for this favoriteThing that can be fairly long"/>
 
         </LinearLayout>
 

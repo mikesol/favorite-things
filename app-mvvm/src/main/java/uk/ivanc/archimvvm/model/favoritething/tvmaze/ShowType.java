@@ -1,4 +1,4 @@
-package uk.ivanc.archimvvm.model.favoritething;
+package uk.ivanc.archimvvm.model.favoritething.tvmaze;
 
 import braque.Property;
 
@@ -7,5 +7,5 @@ import braque.Property;
  */
 
 @Property(String.class)
-public interface Description {
+public interface ShowType {
 }

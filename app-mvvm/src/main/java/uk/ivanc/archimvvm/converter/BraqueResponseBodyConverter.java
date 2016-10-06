@@ -11,49 +11,64 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import braque.RESTOperation;
+import braque.RESTShow;
 import braque.braqued.Deserializer;
 import braque.braqued.StringProvisioner;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import uk.ivanc.archimvvm.Utils;
 
-public class BraqueResponseBodyConverter implements Converter<ResponseBody, Collection<? extends RESTOperation>> {
+public class BraqueResponseBodyConverter implements Converter<ResponseBody, Collection<? extends RESTShow>> {
 
-    private final Class<? extends RESTOperation> deserializingTo;
-    private final String idProp;
+    private final Class<? extends RESTShow> deserializingTo;
     private final BraqueProperty[] properties;
+    private final String arrayAddress;
+    private final String topLevelPath;
 
-    BraqueResponseBodyConverter(Class<? extends RESTOperation> deserializingTo, String idProp, BraqueProperty[] properties) {
+    BraqueResponseBodyConverter(Class<? extends RESTShow> deserializingTo, String topLevelPath, BraqueProperty[] properties) {
+        this(deserializingTo, topLevelPath, properties, null);
+    }
+
+    BraqueResponseBodyConverter(Class<? extends RESTShow> deserializingTo, String topLevelPath, BraqueProperty[] properties, String arrayAddress) {
         this.deserializingTo = deserializingTo;
-        this.idProp = idProp;
+        this.topLevelPath = topLevelPath;
         this.properties = properties;
+        this.arrayAddress = arrayAddress;
     }
 
     static class BraqueProperty {
         final String receivedName;
         final String usedName;
         BraqueProperty(String receivedName, String usedName) {
-            this.receivedName = receivedName.toLowerCase();
+            this.receivedName = receivedName;
             this.usedName = usedName.toLowerCase();
         }
     }
 
-    @Override public Collection<? extends RESTOperation> convert(ResponseBody value) throws IOException {
-        try {
-            JSONObject jsonObject = new JSONObject(value.string());
-            JSONArray items = jsonObject.getJSONArray("items");
+    @Override public Collection<? extends RESTShow> convert(ResponseBody value) throws IOException {
+        try {//Log.d("Braque","starting convert");
+            JSONArray items;
+            if (arrayAddress == null) {
+                items = new JSONArray(value.string());
+            } else {
+                JSONObject jsonObject = new JSONObject(value.string());Log.d("Braque","jobj="+jsonObject.toString());
+                String[] addressSplit = arrayAddress.split("\\.");
+                int i = 0;
+                for (; i < addressSplit.length - 1; i++) {
+                    jsonObject = jsonObject.getJSONObject(addressSplit[i]);
+                }
+                items = jsonObject.getJSONArray(addressSplit[i]);
+            }
             Map<String, Object> serialized = new HashMap<>();
-
+            //Log.d("Braque","items="+items.toString());
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                if (!item.has(idProp)) {
-                    Log.e("BraqueConverter", "item lacks "+idProp);
-                    continue;
-                }
-                String id = Integer.toString(item.getInt(idProp));
-                serialized.put(Utils.toBraquePath(StringProvisioner.pathBrowseGithubs(), id, "id"), id);
-                for (BraqueProperty property : properties) {
+                String id = null;
+                boolean first = true;
+                for (BraqueProperty property : properties) {//Log.d("Braque","looking at this property: "+property.receivedName+" "+property.usedName);
+                    if (first && !property.usedName.equals(StringProvisioner.propId().toLowerCase())) {
+                        throw new IllegalStateException("id must come first");
+                    }
                     JSONObject thisItem = item;
                     String[] splitPath = property.receivedName.split("\\.");
                     int j = 0;
@@ -68,15 +83,31 @@ public class BraqueResponseBodyConverter implements Converter<ResponseBody, Coll
                         continue;
                     }
                     if (thisItem.has(splitPath[j])) {
-                        serialized.put(Utils.toBraquePath(StringProvisioner.pathBrowseGithubs(), id, property.usedName),
-                                thisItem.get(splitPath[j]));
+                        JSONArray maybeArray = thisItem.optJSONArray(splitPath[j]);
+                        if (maybeArray != null) {
+                            for (int k = 0; k < maybeArray.length(); k++) {
+                                serialized.put(Utils.toBraquePath(topLevelPath, id,
+                                        property.usedName, Integer.toString(k)),
+                                        maybeArray.get(k));
+                            }
+                        } else {
+                            Object serializedValue;
+                            if (first) {
+                                serializedValue = id = thisItem.get(splitPath[j]).toString();
+                                first = false;
+                            } else {
+                                serializedValue = thisItem.get(splitPath[j]).toString();
+                            }
+                            serialized.put(Utils.toBraquePath(topLevelPath, id, property.usedName), serializedValue);
+                        }
                     }
                 }
             }//for (Map.Entry<String,Object> entry : serialized.entrySet()){Log.d("BraqueConverter", entry.getKey()+" "+entry.getValue());}
-            Collection<? extends RESTOperation> coll = Deserializer.deserialize(serialized, deserializingTo);
+            Collection<? extends RESTShow> coll = Deserializer.deserialize(serialized, deserializingTo);
+            //Log.d("Braque","coll size="+coll.size());
             return coll;
         } catch (JSONException e) {
-            Log.e("BraqueConverter", e.toString());
+            Log.e("Braque", e.toString());
             return null;
         } finally {
             value.close();

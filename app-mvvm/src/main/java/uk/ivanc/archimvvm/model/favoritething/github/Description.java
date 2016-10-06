@@ -1,4 +1,4 @@
-package uk.ivanc.archimvvm.model.user;
+package uk.ivanc.archimvvm.model.favoritething.github;
 
 import braque.Property;
 
@@ -7,5 +7,5 @@ import braque.Property;
  */
 
 @Property(String.class)
-public interface Name {
+public interface Description {
 }

@@ -1,4 +1,4 @@
-package uk.ivanc.archimvvm.model.favoritething.github;
+package uk.ivanc.archimvvm.model.favoritething.omdb;
 
 import braque.Property;
 
@@ -7,5 +7,5 @@ import braque.Property;
  */
 
 @Property(String.class)
-public interface AvatarURL {
+public interface Language {
 }

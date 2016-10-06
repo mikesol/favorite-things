@@ -6,6 +6,6 @@ import braque.Property;
  * Created by mikesolomon on 05/10/16.
  */
 
-@Property(Boolean.class)
-public interface ILikeIt {
+@Property(String.class)
+public interface AvatarURL {
 }
