@@ -101,14 +101,14 @@ public abstract class BrowseThingViewModel<T extends RESTEndpoint & RESTShow> im
         }
         List<T> newData = new ArrayList<>();
         for (RESTEndpoint element : originalData) {
-            Map<String, Object> serialized = Serializer.serialize(element);
+            Map<String, Object> serialized = Serializer._serialize(element);
             if (likes.contains(((IdGet)element).getId())) {
                 serialized.put(pathHead()
                         +"/"+((IdGet)element).getId()
                         +"/"
                         + StringProvisioner.propLike().toLowerCase(), true);
             }
-            newData.addAll(Deserializer.deserialize(serialized, klass()));
+            newData.addAll(Deserializer._deserialize(serialized, klass()));
         }
         return newData;
     }

@@ -55,7 +55,7 @@ public class ItemFavoriteThingViewModel<T extends RESTEndpoint & RESTShow> exten
                                     FavoriteThingContract.FavoriteThingEntry.COLUMN_NAME_UID+" IS ?",
                                     new String[]{((IdGet)favoriteThing).getId()});
                 } else {
-                    Map<String, Object> serialized = Serializer.serialize(favoriteThing);
+                    Map<String, Object> serialized = Serializer._serialize(favoriteThing);
                     String likePath = new ArrayList<>(serialized.keySet()).get(0).split("/")[0]
                             + "/" + ((IdGet) favoriteThing).getId()
                             + "/" + StringProvisioner.propLike().toLowerCase();

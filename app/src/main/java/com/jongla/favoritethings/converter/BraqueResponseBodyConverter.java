@@ -103,7 +103,7 @@ public class BraqueResponseBodyConverter implements Converter<ResponseBody, Coll
                     }
                 }
             }
-            Collection<? extends RESTShow> coll = Deserializer.deserialize(serialized, deserializingTo);
+            Collection<? extends RESTShow> coll = Deserializer._deserialize(serialized, deserializingTo);
             return coll;
         } catch (JSONException e) {
             Log.e("Braque", e.toString());
