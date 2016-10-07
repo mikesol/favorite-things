@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mikesol/favorite-things.svg?branch=master)](https://travis-ci.org/mikesol/favorite-things)
 # My Favorite Things
 This repository is a fork of Ivan Carballo's [archi][1] that shows off several features of [braque][2].
 
