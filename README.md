@@ -6,8 +6,8 @@ This repository is a fork of Ivan Carballo's [archi][1] that shows off several f
 * The [`Deserializer`](/app/src/main/java/com/jongla/favoritethings/viewmodel/browse/BrowseFavoritesViewModel.java#L68-L92)
 and [`Serializer`](/app/src/main/java/com/jongla/favoritethings/viewmodel/browse/BrowseThingViewModel.java#L86-L115) are used to aggregate data from Retrofit and a custom provider.
 * The [`Transformer`](/app/src/main/java/com/jongla/favoritethings/viewmodel/ItemFavoriteThingViewModel.java#L73-L87) is used to compose types on the fly and send them off as fake Localytics events.
-* The [`Fanner`](/app/src/main/java/com/jongla/favoritethings/Utils.java#L99-L119) helps us aggregate the aggregated data into a Favorite list.
-* The [`StringProvisioner`](/app/src/main/java/com/jongla/favoritethings/converter/BraqueConverterFactory.java#L34-L63) helps transform deserialized data.
+* The [`Fanner`](/app/src/main/java/com/jongla/favoritethings/Utils.java#L99-L119) helps us convert objects stored in the DB.
+* The [`StringProvisioner`](/app/src/main/java/com/jongla/favoritethings/converter/BraqueConverterFactory.java#L34-L63) helps us map values in JSON to Braque objects.
 
 ### Libraries used 
 * AppCompat, CardView and RecyclerView
