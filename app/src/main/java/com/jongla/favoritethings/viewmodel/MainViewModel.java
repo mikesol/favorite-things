@@ -1,6 +1,5 @@
 package com.jongla.favoritethings.viewmodel;
 
-import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -28,7 +27,6 @@ public class MainViewModel implements ViewModel, ViewPager.OnPageChangeListener 
     public ObservableInt searchButtonVisibility;
     public ObservableInt favoriteVisibility;
     public ObservableInt pickerVisibility;
-    public ObservableField<String> text;
 
     private Subscription subscription;
     private String editTextUsernameValue;
@@ -37,7 +35,6 @@ public class MainViewModel implements ViewModel, ViewPager.OnPageChangeListener 
         favoriteVisibility = new ObservableInt(View.VISIBLE);
         pickerVisibility = new ObservableInt(View.GONE);
         searchButtonVisibility = new ObservableInt(View.GONE);
-        text = new ObservableField<>("");
     }
 
     public void setupViewPager(ViewPager viewPager, FragmentManager fragmentManager) {
@@ -104,8 +101,6 @@ public class MainViewModel implements ViewModel, ViewPager.OnPageChangeListener 
             pickerVisibility.set(View.VISIBLE);
             favoriteVisibility.set(View.GONE);
         }
-        text.set("");
-        editTextUsernameValue = "";
         searchButtonVisibility.set(View.GONE);
     }
 

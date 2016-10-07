@@ -69,7 +69,6 @@
                     android:hint="@string/hit_search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
-                    android:text="@{viewModel.text}"
                     android:onEditorAction="@{viewModel.onSearchAction}"
                     android:textColor="@color/white"
                     android:theme="@style/LightEditText"
