@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 
 import braque.RESTEndpoint;
-import braque.RESTShow;
 
 public class FavoriteThingsAdapter<S extends RESTEndpoint> extends
         RecyclerView.Adapter<FavoriteThingsAdapter.RepositoryViewHolder> {
